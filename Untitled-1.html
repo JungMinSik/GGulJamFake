@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>카카오톡 선물하기</title>
+    
+    <!-- 이 부분이 핵심입니다! 카카오톡 단톡방에 링크를 올렸을 때 보여지는 미리보기 정보 -->
+    <meta property="og:title" content="선물이 도착했습니다.">
+    <meta property="og:description" content="[동대문엽기떡볶이] 엽기-A세트 (엽떡+모둠튀김+메추리알+쿨피스)">
+    <!-- 엽떡 공식 이미지 링크 (카톡 미리보기에 뜸) -->
+    <meta property="og:image" content="https://i.postimg.cc/jqzN9SLR/daunlodeu.jpg">
+    
+    <style>
+        /* 기본 리셋 및 폰트 설정 (카카오 스타일) */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: #f5f5f5; 
+            font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            color: #111;
+        }
+
+        /* 상단 네비게이션 바 */
+        .top-nav {
+            background-color: #fff;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #ebebeb;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* 메인 콘텐츠 영역 */
+        .content {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* 브랜드 및 상품명 */
+        .brand-name {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 8px;
+        }
+        .product-name {
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+
+        /* 상품 이미지 */
+        .image-container {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            border: 1px solid #f0f0f0;
+        }
+        .image-container img {
+            width: 100%;
+            display: block;
+        }
+
+        /* 바코드 영역 (블러 처리된 가짜 바코드) */
+        .barcode-section {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 24px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .barcode-blur {
+            width: 80%;
+            height: 60px;
+            background: repeating-linear-gradient(
+                90deg,
+                #333,
+                #333 4px,
+                transparent 4px,
+                transparent 8px,
+                #333 8px,
+                #333 10px,
+                transparent 10px,
+                transparent 14px
+            );
+            margin: 0 auto 15px;
+            filter: blur(4px);
+            opacity: 0.6;
+        }
+        .barcode-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* 유효기간 등 상세 정보 */
+        .info-list {
+            list-style: none;
+            border-top: 1px solid #ebebeb;
+            padding-top: 20px;
+        }
+        .info-list li {
+            display: flex;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        .info-list .label {
+            width: 80px;
+            color: #777;
+        }
+        .info-list .value {
+            flex: 1;
+            color: #111;
+        }
+        .value.red {
+            color: #fa5252;
+            font-weight: bold;
+        }
+
+        /* 하단 고정 버튼 */
+        .bottom-btn-area {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 10px 15px;
+            background-color: #fff;
+            border-top: 1px solid #ebebeb;
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            flex: 1;
+            height: 50px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-kakao {
+            background-color: #fee500;
+            color: #111;
+        }
+        .btn-gray {
+            background-color: #f5f5f5;
+            color: #111;
+        }
+
+        /* 낚시 모달창 (처음엔 숨김) */
+        #prank-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+        }
+        #prank-modal h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #fee500;
+        }
+        #prank-modal p {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        선물 상세
+    </div>
+
+    <div class="content">
+        <div class="brand-name">동대문엽기떡볶이</div>
+        <div class="product-name">엽기-A세트<br>(엽떡+모둠튀김+메추리알+쿨피스)</div>
+        
+        <div class="image-container">
+            <!-- 엽떡 세트 이미지 -->
+            <img src="https://i.postimg.cc/jqzN9SLR/daunlodeu.jpg" alt="엽기-A세트">
+        </div>
+
+        <div class="barcode-section">
+            <div class="barcode-blur"></div>
+            <div class="barcode-text">바코드를 보려면 교환권 저장을 눌러주세요</div>
+        </div>
+
+        <ul class="info-list">
+            <li>
+                <div class="label">교환처</div>
+                <div class="value">동대문엽기떡볶이 전 매장 (일부 매장 제외)</div>
+            </li>
+            <li>
+                <div class="label">유효기간</div>
+                <!-- 오늘 날짜 기준으로 약 한 달 뒤로 설정해두면 리얼리티가 살아납니다 -->
+                <div class="value red">2026.07.03 까지</div>
+            </li>
+            <li>
+                <div class="label">주문번호</div>
+                <div class="value">20260603-7890123</div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 하단 여백 확보 -->
+    <div style="height: 70px;"></div>
+
+    <div class="bottom-btn-area">
+        <button class="btn btn-gray" onclick="showPrank()">매장찾기</button>
+        <button class="btn btn-kakao" onclick="showPrank()">교환권 저장</button>
+    </div>
+
+    <!-- 낚시 실행 시 보여질 모달 -->
+    <div id="prank-modal">
+        <h1>🎣 파닥파닥!</h1>
+        <p>아쉽지만 엽떡은 없습니다.<br>오늘도 좋은 하루 보내세요! ㅋㅋㅋ</p>
+    </div>
+
+    <script>
+        function showPrank() {
+            // 버튼을 누르는 순간 검은 화면에 낚시 문구가 뜹니다.
+            document.getElementById('prank-modal').style.display = 'flex';
+            
+            // 스마트폰 진동 효과 (지원하는 기기에서만 작동)
+            if (navigator.vibrate) {
+                navigator.vibrate([200, 100, 200]);
+            }
+        }
+    </script>
+</body>
+</html>
