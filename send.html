@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>카톡 낚시 발송기</title>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
+    <script>
+        // ★ 1단계에서 복사한 'JavaScript 키'를 아래 따옴표 안에 넣으세요!
+        Kakao.init('637382b7f0e95a6a3b292be967277ad1');
+
+        function sendPrank() {
+            Kakao.Share.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: '선물이 도착했습니다.',
+                    description: '[동대문엽기떡볶이] 엽기-A세트 (엽떡+모둠튀김+메추리알+쿨피스)',
+                    imageUrl: 'https://www.yupdduk.com/images/menu/setA.png',
+                    link: {
+                        mobileWebUrl: 'https://jungminsik.github.io/GGulJamFake/',
+                        webUrl: 'https://jungminsik.github.io/GGulJamFake/',
+                    },
+                },
+                buttons: [
+                    {
+                        // 카톡 말풍선 하단에 생길 진짜 같은 버튼 이름!
+                        title: '선물 확인하기', 
+                        link: {
+                            mobileWebUrl: 'https://jungminsik.github.io/GGulJamFake/',
+                            webUrl: 'https://jungminsik.github.io/GGulJamFake/',
+                        },
+                    },
+                ],
+            });
+        }
+    </script>
+</head>
+<body style="text-align: center; padding: 50px;">
+    <h1>🎣 낚시 미끼 투척기</h1>
+    <button onclick="sendPrank()" style="padding: 20px; font-size: 20px; background-color: #fee500; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">
+        단톡방에 엽떡 쏘기!
+    </button>
+</body>
+</html>
